@@ -1,0 +1,72 @@
+/* Colors */
+$trueBlack: #333;
+$black: #636c72;
+$white: #fff;
+$almost_white: #f5f5f5;
+$border: #ddd;
+$grey: #999;
+$bg: #676767;
+$blue: #006697;
+$darkBlue: #286090;
+$green: #5cb85c;
+$darkGreen: #449d44;
+$orange: #f0ad4e;
+$red:#d9534f;
+$info: #5bc0de;
+$acw-btn: #ff9900;
+$acw-btn-hover: #993300;
+
+
+/* screen sizes */
+$mobile: 768px;
+$desktop: 1024px;
+$large: 1680px;
+
+
+/* fonts */
+
+
+/* transition */
+@mixin transition($args) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -ms-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+
+/* Widely-used vertical alignment mixin */
+@mixin vertical-align() {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+/* max width used on everything */
+@mixin max_width($width){
+  max-width: $width;
+  @media screen and (min-width: $width) {
+    margin: auto;
+  }
+}
+
+/* style for all link states */
+@mixin links() {
+	a, a:hover, a:active, a:visited { @content; }
+}
+
+@mixin embedText() {
+  h1, h2, h3, h4, h5, h6, p { @content; }
+}
+
+
+/* clearfix */
+@mixin clearfix() {
+  &::after {
+    display: block;
+    content: "";
+    clear: both;
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "javascript": {
+    "main": "http://localhost:4001/dist/main-53136316bb271ede37a3.js"
+  },
+  "styles": {},
+  "assets": {
+    "./src/containers/App/App.scss": {
+      "app": "app___1CDKx",
+      "header": "header___1kRO4",
+      "inner": "inner___3NIMb",
+      "logo": "logo___vVZg1",
+      "navLink": "navLink___3Mnzp",
+      "siteTitle": "siteTitle___2rMzY",
+      "appContent": "appContent___2DqeY",
+      "footer": "footer___1RL0i",
+      "_style": "/* Colors */\n/* screen sizes */\n/* fonts */\n/* transition */\n/* Widely-used vertical alignment mixin */\n/* max width used on everything */\n/* style for all link states */\n/* clearfix */\n.app___1CDKx {\n  position: relative;\n}\n\n.app___1CDKx .header___1kRO4 {\n  position: fixed;\n  width: 100%;\n  height: 3.5rem;\n  left: 0;\n  top: 0;\n  z-index: 9999;\n  background-color: white;\n  border-bottom: 1px solid #dddddd;\n  -webkit-transition: 0.3s all;\n  -moz-transition: 0.3s all;\n  -ms-transition: 0.3s all;\n  -o-transition: 0.3s all;\n  transition: 0.3s all;\n}\n\n@media screen and (max-width: 767px) {\n  .app___1CDKx .header___1kRO4 {\n    height: 7.5rem;\n  }\n}\n\n.app___1CDKx .header___1kRO4 .inner___3NIMb {\n  position: relative;\n  line-height: 3.5rem;\n  padding: 0 15px;\n}\n\n.app___1CDKx .header___1kRO4 .inner___3NIMb .logo___vVZg1 .navLink___3Mnzp, .app___1CDKx .header___1kRO4 .inner___3NIMb .logo___vVZg1 .navLink___3Mnzp:hover {\n  text-decoration: none;\n}\n\n.app___1CDKx .header___1kRO4 .inner___3NIMb .logo___vVZg1 .siteTitle___2rMzY {\n  font-size: 1.2rem;\n  color: #006697;\n  -webkit-transition: 0.3s all;\n  -moz-transition: 0.3s all;\n  -ms-transition: 0.3s all;\n  -o-transition: 0.3s all;\n  transition: 0.3s all;\n}\n\n.app___1CDKx .appContent___2DqeY {\n  position: relative;\n  padding-top: 3.5rem;\n  min-height: calc(100vh - 3.5rem);\n}\n\n.app___1CDKx .footer___1RL0i {\n  background-color: #f5f5f5;\n  border-top: 1px solid #ddd;\n  font-size: .8rem;\n}\n"
+    },
+    "./src/containers/Home/Home.scss": {
+      "home": "home___2dECy",
+      "textWrap": "textWrap___1sims",
+      "_style": "/* Colors */\n/* screen sizes */\n/* fonts */\n/* transition */\n/* Widely-used vertical alignment mixin */\n/* max width used on everything */\n/* style for all link states */\n/* clearfix */\n.home___2dECy {\n  position: relative;\n  height: calc(100vh - 7rem);\n}\n\n.home___2dECy .textWrap___1sims {\n  position: relative;\n  top: 50%;\n  -webkit-transform: translateY(-50%);\n  -ms-transform: translateY(-50%);\n  transform: translateY(-50%);\n}\n"
+    },
+    "./src/containers/Register/Register.scss": {
+      "registrationPage": "registrationPage___e33zs",
+      "_style": ".registrationPage___e33zs {\n  position: relative;\n}\n"
+    },
+    "./src/containers/Profile/Profile.scss": {
+      "profilePage": "profilePage___3gLhz",
+      "_style": "/* Colors */\n/* screen sizes */\n/* fonts */\n/* transition */\n/* Widely-used vertical alignment mixin */\n/* max width used on everything */\n/* style for all link states */\n/* clearfix */\n.profilePage___3gLhz {\n  position: relative;\n}\n"
+    }
+  },
+  "webpack": {
+    "version": "3.8.1"
+  }
+}

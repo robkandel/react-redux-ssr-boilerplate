@@ -1,0 +1,8 @@
+@import "../../theme/variables.scss";
+.home {
+  position: relative;
+  height: calc(100vh - 7rem);
+  .textWrap {
+  	@include vertical-align();
+  }
+}

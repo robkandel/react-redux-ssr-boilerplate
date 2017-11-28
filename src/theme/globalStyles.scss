@@ -1,0 +1,106 @@
+@import "./variables.scss";
+
+
+/* global */
+
+body, html {
+	color:$black;
+}
+
+body {
+	&.noScroll {
+		height: 100vh;
+		overflow:hidden;
+		.app {
+			height: 100vh;
+			overflow:hidden;
+		}
+	}
+}
+
+a, a:hover, a:active, a:visited {
+	color:$blue;
+}
+
+.textBtn, .textBtn:hover {
+	color:$black;
+	font-size: 1rem;
+    line-height: 1.25;
+}
+
+.btn {
+	@include transition(.3s all);
+	cursor:pointer;
+}
+
+
+/* fonts */
+.centerText {
+	position: relative;
+	text-align: center;
+}
+
+.uppercase{
+	text-transform: uppercase;
+}
+
+.maxTextWidth {
+	max-width: 50rem;
+    margin: auto;
+}
+
+
+/* structure */
+.contentMaxWidth {
+	position: relative;
+	margin: 4rem 2rem 2rem;
+	max-width: 62.5rem;
+	@media screen and (min-width: 64.5rem) {
+		margin: 4rem auto 2rem;
+	}
+}
+
+/* forms */
+.formWrapper {
+	position: relative;
+	margin-top: 2rem;
+	border: 1px solid $border;
+	border-radius: .5rem;
+	padding: 2rem;
+	max-width: 37.5rem;
+}
+
+.formStep {
+	.form-group {
+		margin-bottom: 2rem;
+		.input-group-addon {
+			@include transition(.3s all);
+			&.is-invalid {
+				border-color:$red;
+				color:$red;
+			}
+		}
+	}
+}
+
+.input-group {
+	.input-group-addon {
+		@include transition(.3s all);
+		&.is-invalid {
+			border-color:$red;
+			color:$red;
+		}
+	}
+}
+
+form label, .formStep label, .form-group label {
+	display:block;
+	font-weight: 800;
+	margin-bottom: 0;
+}
+
+
+.logoutBtn {
+	@include vertical-align();
+	margin: auto;
+}

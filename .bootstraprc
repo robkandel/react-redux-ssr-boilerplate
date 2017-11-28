@@ -1,0 +1,119 @@
+---
+# Output debugging info
+loglevel: debug
+
+# Major version of Bootstrap: 3 or 4
+bootstrapVersion: 4
+
+# If Bootstrap version 4 is used - turn on/off flexbox model
+useFlexbox: true
+
+# Webpack loaders, order matters
+styleLoaders:
+  - style
+  - css
+  - postcss?sourceMap
+  - sass
+
+# Extract styles to stand-alone css file
+# Different settings for different environments can be used,
+# It depends on value of NODE_ENV environment variable
+# This param can also be set in webpack config:
+#   entry: 'bootstrap-loader/extractStyles'
+
+env:
+  development:
+    extractStyles: false
+    styleLoaders:
+      - style-loader?sourceMap
+      - css-loader?sourceMap&importLoaders=2
+      - resolve-url-loader
+      - sass-loader?sourceMap
+  production:
+    extractStyles: true
+    styleLoaders:
+      - style-loader
+      - css-loader?importLoaders=1
+      - sass-loader?sourceMap
+
+
+# Customize Bootstrap variables that get imported before the original Bootstrap variables.
+# Thus, derived Bootstrap variables can depend on values from here.
+# See the Bootstrap _variables.scss file for examples of derived Bootstrap variables.
+#
+# preBootstrapCustomizations: ./src/styles/bootstrap/pre-customizations.scss
+
+
+# This gets loaded after bootstrap/variables is loaded
+# Thus, you may customize Bootstrap variables
+# based on the values established in the Bootstrap _variables.scss file
+#
+bootstrapCustomizations: ./src/theme/customizations.scss
+
+
+# Import your custom styles here
+# Usually this endpoint-file contains list of @imports of your application styles
+#
+appStyles: ./src/theme/globalStyles.scss
+
+
+### Bootstrap styles
+styles:
+
+  # Mixins
+  mixins: true
+
+  # Reset and dependencies
+  print: true
+
+  # Core CSS
+  reboot: true
+  type: true
+  images: true
+  code: true
+  grid: true
+  tables: true
+  forms: true
+  buttons: true
+
+  # Components
+  transitions: true
+  dropdown: true
+  button-group: true
+  input-group: true
+  custom-forms: true
+  nav: true
+  navbar: true
+  card: true
+  breadcrumb: true
+  pagination: true
+  jumbotron: true
+  alert: true
+  progress: true
+  media: true
+  list-group: true
+  close: true
+  badge: true
+
+  # Components w/ JavaScript
+  modal: false
+  tooltip: false
+  popover: false
+  carousel: false
+
+  # Utility classes
+  utilities: false
+
+### Bootstrap scripts
+scripts:
+  alert: false
+  button: false
+  carousel: false
+  collapse: false
+  dropdown: false
+  modal: false
+  popover: false
+  scrollspy: false
+  tab: false
+  tooltip: false
+  util: false
