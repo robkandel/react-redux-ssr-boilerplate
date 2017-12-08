@@ -38,7 +38,6 @@ export default class Html extends Component {
                   rel="stylesheet" type="text/css" charSet="UTF-8"/>
           )}
           { Object.keys(assets.styles).length === 0 ? <style dangerouslySetInnerHTML={{__html: require('../containers/App/App.scss')._style}}/> : null }
-          <script src={'https://maps.googleapis.com/maps/api/js?key=' + config.googleAPIKey + '&libraries=places'} />
         </head>
         <body>
           <div id="content" dangerouslySetInnerHTML={{__html: content}} />
