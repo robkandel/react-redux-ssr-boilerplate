@@ -1,10 +1,12 @@
-require('babel-polyfill');
+// require('babel-polyfill');
 
+// Webpack config for creating the production bundle.
 var path = require('path');
 var webpack = require('webpack');
 var CleanPlugin = require('clean-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var strip = require('strip-loader');
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var ReactLoadablePlugin = require('react-loadable/webpack').ReactLoadablePlugin;
 
 var projectRootPath = path.resolve(__dirname, '../');
 var assetsPath = path.resolve(projectRootPath, './static/dist');
@@ -13,11 +15,13 @@ var assetsPath = path.resolve(projectRootPath, './static/dist');
 var WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin');
 var webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(require('./webpack-isomorphic-tools'));
 
+var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+
 module.exports = {
   devtool: 'source-map',
   context: path.resolve(__dirname, '..'),
   entry: {
-    'main': [
+    main: [
       'bootstrap-loader',
       './src/client.js'
     ]
@@ -25,49 +29,77 @@ module.exports = {
   output: {
     path: assetsPath,
     filename: '[name]-[chunkhash].js',
-    chunkFilename: '[name]-[chunkhash].js',
-    publicPath: '/dist/'
-  },
-  module: {
-    loaders: [
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: [strip.loader('debug'), 'babel-loader']},
-      { test: /\.json$/, loader: 'json-loader' },
-      // { test: /\.scss$/, loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true') },
-      { test: /\.scss$/, loader: [
-        {
-          loader: 'style-loader',
-          options: { sourceMap: true }
-        }, {
-          loader: 'css-loader',
-          options: {
-            modules: true,
-            importLoaders: 2,
-            sourceMap: true,
-            localIdentName: '[local]___[hash:base64:5]'
-          }
-        }, {
-          loader: 'postcss-loader',
-          options: {
-            sourceMap: true
-          }
-        }, {
-          loader: 'sass-loader',
-          options: {
-            outputStyle: 'expanded',
-            sourceMap: true
-          }
-        }
-      ]},
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
-      { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
-      { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
-      { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" },
-      { test: webpackIsomorphicToolsPlugin.regular_expression('images'), loader: 'url-loader?limit=10240' }
-    ]
+    chunkFilename: '[name]-[chunkhash].chunk.js',
+    publicPath: '/dist/',
   },
   performance: {
     hints: false
+  },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
+        exclude: /node_modules(\/|\\)(?!(@feathersjs))/
+      }, {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                importLoaders: 2,
+                sourceMap: true
+              }
+            }, {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: true
+              }
+            }, {
+              loader: 'sass-loader',
+              options: {
+                outputStyle: 'expanded',
+                sourceMap: true,
+                sourceMapContents: true
+              }
+            }
+          ]
+        })
+      }, {
+        test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10240,
+          mimetype: 'application/font-woff'
+        }
+      }, {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10240,
+          mimetype: 'application/octet-stream'
+        }
+      }, {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file-loader'
+      }, {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10240,
+          mimetype: 'image/svg+xml'
+        }
+      }, {
+        test: webpackIsomorphicToolsPlugin.regular_expression('images'),
+        loader: 'url-loader',
+        options: {
+          limit: 10240
+        }
+      }
+    ]
   },
   resolve: {
     modules: [
@@ -78,7 +110,7 @@ module.exports = {
   },
   plugins: [
     new webpack.LoaderOptionsPlugin({
-      test: /\.(scss)/,
+      test: /\.(less|scss)/,
       options: {
         postcss: function (webpack) {
           return [
@@ -91,29 +123,60 @@ module.exports = {
         }
       }
     }),
+
     new CleanPlugin([assetsPath], { root: projectRootPath }),
 
-    new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true}),
+    // css files from the extract-text-plugin loader
+    new ExtractTextPlugin({
+      filename: '[name]-[chunkhash].css',
+      // disable: false,
+      allChunks: true
+    }),
+
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"'
-      },
+      'process.env.NODE_ENV': '"production"',
 
       __CLIENT__: true,
       __SERVER__: false,
       __DEVELOPMENT__: false
     }),
 
+    // ignore dev config
     new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
 
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
+    // optimizations
+    new UglifyJsPlugin(),
+
+    webpackIsomorphicToolsPlugin,
+
+    new ReactLoadablePlugin({
+      filename: path.join(assetsPath, 'loadable-chunks.json')
     }),
 
-    webpackIsomorphicToolsPlugin
+    // new HtmlWebpackPlugin({
+    //   filename: 'index.html',
+    //   template: 'src/pwa.js'
+    // }),
+
+    new SWPrecacheWebpackPlugin({
+      cacheId: 'react-redux-universal-hot-example',
+      filename: 'service-worker.js',
+      maximumFileSizeToCacheInBytes: 8388608,
+
+      // Ensure all our static, local assets are cached.
+      staticFileGlobs: [path.dirname(assetsPath) + '/**/*.{js,html,css,png,jpg,gif,svg,eot,ttf,woff,woff2}'],
+      stripPrefix: path.dirname(assetsPath),
+
+      directoryIndex: '/',
+      verbose: true,
+      navigateFallback: '/dist/index.html',
+      runtimeCaching: [{
+        urlPattern: /\/api\/widget\/load(.*)/,
+        handler: 'networkFirst',
+        options: {
+          debug: true
+        }
+      }]
+    })
   ]
 };
