@@ -1,17 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { asyncConnect } from 'redux-connect';
 import Helmet from 'react-helmet';
-import * as authActions from 'redux/modules/auth';
+import { showUserInfo } from 'redux/modules/user';
+import { logout } from 'redux/modules/auth';
 
-@connect(
-  state => ({
-    user: state.auth.user
-  }), authActions)
+@asyncConnect([{
+  promise: ({ store: { dispatch, getState } }) => {
+    const promises = [];
+    if (getState().auth.user) {
+      promises.push(dispatch(showUserInfo(getState().auth.user)));
+    }
+    return Promise.all(promises);
+  }
+}])
 
-export default class Profile extends Component {
+class Profile extends Component {
   static propTypes = {
-    user: PropTypes.object.isRequired
+    userInfo: PropTypes.object.isRequired,
+    errorUserInfo: PropTypes.object,
+    logout: PropTypes.func.isRequired
+  };
+
+  static defaultProps = {
+    errorUserInfo: {}
   };
 
   constructor(props) {
@@ -20,7 +33,7 @@ export default class Profile extends Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { userInfo, errorUserInfo } = this.props;
     const styles = require('./Profile.scss');
     return (
       <div className={styles.profilePage}>
@@ -31,7 +44,15 @@ export default class Profile extends Component {
               <h1 className="pageTitle">Profile</h1>
             </div>
             <div className="row" style={{ marginTop: '2rem' }}>
-              <h2>Hi your user id is: {user.id}</h2>
+              {Object.keys(errorUserInfo).length === 0 && <div className="col col-12">
+                <h2>Hi { userInfo.first_name + ' ' + userInfo.last_name}</h2>
+                <p>This is a profile page that will host all your profile info</p>
+              </div>}
+            </div>
+            <div className="row" style={{ marginTop: '2rem' }}>
+              <div className="col">
+                <div className="btn btn-danger" onClick={this.props.logout} role="button" tabIndex="0">Log Out</div>
+              </div>
             </div>
           </div>
         </div>
@@ -39,3 +60,19 @@ export default class Profile extends Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    logout: () => dispatch(logout())
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    userInfo: state.user.userInfo,
+    errorUserInfo: state.user.errorUserInfo
+
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

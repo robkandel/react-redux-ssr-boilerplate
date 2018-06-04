@@ -30,9 +30,9 @@ export default class Html extends Component {
           <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
           <meta name="apple-mobile-web-app-capable" content="yes" />
-          <link rel="apple-touch-icon" sizes="180x180" href='/apple-icon.jpg' />
           <meta name="referrer" content="always" />
-          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossOrigin="anonymous" />
+          <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,400i,800" rel="stylesheet" />
           {Object.keys(assets.styles).map((style, key) =>
             <link href={assets.styles[style]} key={key} media="screen, projection"
                   rel="stylesheet" type="text/css" charSet="UTF-8"/>
@@ -43,7 +43,7 @@ export default class Html extends Component {
           <div id="content" dangerouslySetInnerHTML={{__html: content}} />
           <script dangerouslySetInnerHTML={{__html: `window.boilerplate_data=${serialize(store.getState())};`}} charSet="UTF-8" />
           <script src={assets.javascript.main} charSet="UTF-8" />
-          <div dangerouslySetInnerHTML={{__html: '<!-- Built by Little Long Doggie Stuidos Ⓒ' + new Date().getFullYear() +'-->'}} />
+          <div dangerouslySetInnerHTML={{__html: '<!-- Built by Rob Kandel Ⓒ' + new Date().getFullYear() +'-->'}} />
         </body>
       </html>
     );

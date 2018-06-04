@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
-import { RegistrationForm } from '../../components';
+import { RegistrationForm } from 'components';
 
 export default class Register extends Component {
   constructor(props) {

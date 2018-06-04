@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 import Helmet from 'react-helmet';
 import { push } from 'react-router-redux';
-import { isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth';
-import * as authActions from 'redux/modules/auth';
-import { IndexLink, Link } from 'react-router';
+import { isLoaded as isAuthLoaded, load as loadAuth, logout } from 'redux/modules/auth';
+import { Header, Footer } from 'components';
 import config from '../../config';
 
 @asyncConnect([{
@@ -19,18 +18,13 @@ import config from '../../config';
   }
 }])
 
-@connect(
-  state => ({
-    user: state.auth.user,
-  }), { ...authActions, pushState: push })
-
-export default class App extends Component {
+class App extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
     user: PropTypes.object,
     location: PropTypes.object.isRequired,
     router: PropTypes.object.isRequired,
-    pushState: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired
   };
 
@@ -51,10 +45,10 @@ export default class App extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.user && Object.keys(this.props.user).length === 0 && Object.keys(nextProps.user).length > 0) {
       const redirect = this.props.router.location.query && this.props.router.location.query.redirect;
-      this.props.pushState(redirect || '/profile');
+      this.props.push(redirect || '/profile');
     }
     if (Object.keys(this.props.user).length > 0 && Object.keys(nextProps.user).length === 0) {
-      this.props.pushState('/');
+      this.props.push('/');
     }
   }
 
@@ -64,55 +58,32 @@ export default class App extends Component {
   }
 
   render() {
-    const { user } = this.props;
     const styles = require('./App.scss');
     return (
       <div className={styles.app}>
         <Helmet {...config.app.head} />
-        <header className={styles.header}>
-          <div className={styles.inner}>
-            <div className="row">
-              <div className={styles.logo + ' col col-12 col-md-8 col-xl-10'}>
-                <IndexLink to="/" className={styles.navLink + ' textBtn'}>
-                  <span className={styles.siteTitle}>{config.app.title}</span>
-                </IndexLink>
-              </div>
-              <div className={styles.menuWrapper + ' col col-12 col-md-4 col-xl-2'}>
-                <nav className={styles.mainNav}>
-                  {(!user || (user && Object.keys(user).length === 0)) && <div className="row">
-                    <div className={styles.navItem + ' col'}>
-                      <Link to="/login" className={styles.navLink + ' textBtn'}>Login</Link>
-                    </div>
-                    <div className={styles.navItem + ' col'}>
-                      <Link to="/register" className="btn btn-acw">Sign up</Link>
-                    </div>
-                  </div>}
-                  {user && Object.keys(user).length !== 0 && <div className="row">
-                    <div className={styles.navItem + ' col'}>
-                      <Link to="/profile" className={styles.navLink + ' textBtn'}>Profile</Link>
-                    </div>
-                    <div className={styles.navItem + ' col'}>
-                      <Link to="/logout" className={styles.navLink + ' btn btn-danger'} onClick={(event) => this.logout(event)}>Logout</Link>
-                    </div>
-                  </div>}
-                </nav>
-              </div>
-            </div>
-          </div>
-        </header>
+        <Header />
         <div className={styles.appContent}>
           {this.props.children}
         </div>
-        <footer className={styles.footer}>
-          <div className="container containerPadding">
-            <div className="row" style={{ margin: '2rem 0 -3rem', color: '#aaa' }}>
-              <div className="col centerText">
-                <span className={styles.copyright}><i>&copy;&nbsp;{new Date().getFullYear()}&nbsp;Built by Little Long Doggie Stuidos, LLC</i></span>
-              </div>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    push: (url) => dispatch(push(url)),
+    logout: () => dispatch(logout())
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    user: state.auth.user
+
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

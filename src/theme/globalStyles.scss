@@ -5,6 +5,7 @@
 
 body, html {
 	color:$black;
+	font-family: 'Open Sans', sans-serif;
 }
 
 body {
@@ -18,8 +19,12 @@ body {
 	}
 }
 
+
 a, a:hover, a:active, a:visited {
 	color:$blue;
+	&.btn {
+		color:$white;
+	}
 }
 
 .textBtn, .textBtn:hover {
@@ -32,6 +37,7 @@ a, a:hover, a:active, a:visited {
 	@include transition(.3s all);
 	cursor:pointer;
 }
+
 
 
 /* fonts */
@@ -68,9 +74,24 @@ a, a:hover, a:active, a:visited {
 	border-radius: .5rem;
 	padding: 2rem;
 	max-width: 37.5rem;
+	.inputWrapper {
+		margin-bottom: 2rem;
+		.input-group-append {
+			.input-group-text {
+				@include transition(.3s all);
+			}
+			&.error {
+				.input-group-text {
+					border-color:$red;
+					background-color:$red !important;
+					color:$white;
+				}
+			}
+		}
+	}
 }
 
-.formStep {
+.formStep, .input-group {
 	.form-group {
 		margin-bottom: 2rem;
 		.input-group-addon {
@@ -93,7 +114,7 @@ a, a:hover, a:active, a:visited {
 	}
 }
 
-form label, .formStep label, .form-group label {
+form label, .formStep label, .form-group label, .input-group label {
 	display:block;
 	font-weight: 800;
 	margin-bottom: 0;

@@ -95,7 +95,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         isCheckingEmail: true,
-        checkResult: null
+        checkResult: true
       };
     case EMAIL_CHECK_SUCCESS:
       return {
@@ -107,7 +107,7 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         isCheckingEmail: false,
-        checkResult: null
+        checkResult: true
       };
     default:
       return state;
@@ -123,7 +123,8 @@ export function load(user) {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.post('/api/1.0/user/session/renew', {
       data: {
-        user_id: user.user_id,
+        user_id: user.id,
+        id: user.id,
         session_renewal_token: user.session_renewal_token,
         session_token: user.session_token
       },

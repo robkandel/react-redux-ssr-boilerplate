@@ -1,5 +1,11 @@
 module.exports = Object.assign({
   auth: {
-    loaded: false
+    loaded: false,
+    user: {}
+  },
+  user: {
+    loadingUserInfo: false,
+    userInfo: {},
+    errorUserInfo: {}
   }
 });

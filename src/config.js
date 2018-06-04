@@ -16,15 +16,15 @@ module.exports = Object.assign({
   apiHost: process.env.APIHOST || 'localhost',
   apiPort: process.env.APIPORT,
   app: {
-    title: 'React Redux SSR Boilerplate',
-    description: 'React Redux Server Side Rendering Boilerplate',
+    title: 'React Boilerplate',
+    description: 'This React boilerplate runs with redux and supports server side rendering',
     head: {
       titleTemplate: 'React Redux SSR Boilerplate - %s',
       meta: [
         { name: 'description', content: 'React Redux Server Side Rendering Boilerplate' },
         { charset: 'utf-8' },
         { property: 'og:site_name', content: 'React Redux SSR Boilerplate' },
-        { property: 'og:image', content: 'https://react-redux.herokuapp.com/logo.jpg' },
+        { property: 'og:image', content: 'https://reactjs.org/logo-og.png' },
         { property: 'og:locale', content: 'en_US' },
         { property: 'og:title', content: 'React Redux SSR Boilerplate' },
         { property: 'og:description', content: 'React Redux Server Side Rendering Boilerplate' }

@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { IndexLink } from 'react-router';
-import * as authActions from 'redux/modules/auth';
+import { logout } from 'redux/modules/auth';
 import { connect } from 'react-redux';
 
-@connect(
-  state => ({ user: state.auth.user }),
-  authActions)
 
-export default class LogoutPage extends Component {
+class LogoutPage extends Component {
   static propTypes = {
     logout: PropTypes.func.isRequired
   }
@@ -22,3 +19,18 @@ export default class LogoutPage extends Component {
     </div>);
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    logout: () => dispatch(logout())
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    user: state.auth.user
+
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogoutPage);
